@@ -4,18 +4,21 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls;
+  Dialogs, StdCtrls, ExtCtrls, Menus;
 
 type
   TOpPcm_main = class(TForm)
     ImgFeld: TImage;
     BtnReset: TButton;
+    main_menu: TMainMenu;
+    Einstellungen1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure Reset;
     procedure DrawCells;
     //procedure DrawGrid;
     procedure BtnResetClick(Sender: TObject);
-    procedure FormKeyPress(Sender :TObject; var Key: Char);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure Einstellungen1Click(Sender: TObject);
 
     //Fürs malen mit der Maus, wenn dass hier und unten das wieder eingeklammert ist, muss man im ImgFeld bei OnMouseDown wieder ImgFeldMouseDown einfügen
      {procedure ImgFeldMouseDown(Sender: TObject; Button: TMouseButton;
@@ -25,6 +28,11 @@ type
     { Private-Deklarationen }
   public
     { Public-Deklarationen }
+
+    Color0: TColor;
+    Color1: TColor;
+    Color2: TColor;
+
   end;
 
 const
@@ -37,11 +45,20 @@ var
 
 implementation
 
+uses uOpPcm_settings;
+
 {$R *.dfm}
 
 procedure TOpPcm_main.FormCreate(Sender: TObject);
 begin
   ImgFeld.Canvas.Pen.Color := clWhite;
+
+
+  //ColorX variable definieren
+  Color0 := ClWhite;
+  Color1 := ClBlue;
+  Color2 := ClYellow;
+
   // Initialisiere Spielfeld
   Reset;
 end;
@@ -316,17 +333,17 @@ begin
       begin
       //Farbe für 0
         if Spielfeld[x,y] = 0 then
-          ImgFeld.Canvas.Brush.Color := ClWhite
+          ImgFeld.Canvas.Brush.Color := Color0
         else
         begin
           //Farbe für 1
           if Spielfeld[x,y] = 1 then
-          ImgFeld.Canvas.Brush.Color := ClBlue
+          ImgFeld.Canvas.Brush.Color := Color1
           else
           begin
             //Farbe für 2
             if Spielfeld[x,y] = 2 then
-            ImgFeld.Canvas.Brush.Color := ClYellow;
+            ImgFeld.Canvas.Brush.Color := Color2;
             //Möglichkeit für weitere Farben
             {else
             begin
@@ -357,10 +374,21 @@ begin
   Reset;
 end;
 
+
 procedure TOpPcm_main.FormKeyPress(Sender: TObject; var Key: Char);
 begin
- Key := 'w';
- ShowMessage('hallo');
+
+  Key := 'w';
+
+  ShowMessage('lol');
+
+end;
+
+procedure TOpPcm_main.Einstellungen1Click(Sender: TObject);
+begin
+
+  OpPcm_settings.show;
+
 end;
 
 end.
